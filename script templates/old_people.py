@@ -8,6 +8,7 @@ Usage:
 """
 import os
 import inspect 
+import sqlite3
 
 def main():
     global db_path
@@ -30,7 +31,11 @@ def get_old_people():
     Returns:
         list: (name, age) of old people 
     """
-    # TODO: Create function body
+    con = sqlite3.connect(create_db)
+    cur = con.cursor()
+    find_name_age = """
+        SELECT a
+
     return []
 
 def print_name_and_age(name_and_age_list):
@@ -39,7 +44,7 @@ def print_name_and_age(name_and_age_list):
     Args:
         name_and_age_list (list): (name, age) of people
     """
-    # TODO: Create function body
+    
     return
 
 def save_name_and_age_to_csv(name_and_age_list, csv_path):
