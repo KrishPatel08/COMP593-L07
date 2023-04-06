@@ -7,6 +7,7 @@ Usage:
  python old_people.py
 """
 import os
+import pandas as pd
 import inspect 
 import sqlite3
 
@@ -31,12 +32,21 @@ def get_old_people():
     Returns:
         list: (name, age) of old people 
     """
-    con = sqlite3.connect(create_db)
+    con = sqlite3.connect(db_path)
+    
     cur = con.cursor()
-    find_name_age = """
-        SELECT a
 
-    return []
+    get_old_people_query = """
+        SELECT name, age FROM people WHERE age>=50;
+        """
+
+    cur.execute(get_old_people_query)
+
+    query_result = cur.fetchall()
+    
+    con.close()
+
+    return query_result
 
 def print_name_and_age(name_and_age_list):
     """Prints name and age of all people in provided list
@@ -44,8 +54,9 @@ def print_name_and_age(name_and_age_list):
     Args:
         name_and_age_list (list): (name, age) of people
     """
+    for name, age in name_and_age_list:
+        print(f'{name} is {age} years old.')
     
-    return
 
 def save_name_and_age_to_csv(name_and_age_list, csv_path):
     """Saves name and age of all people in provided list
@@ -54,8 +65,12 @@ def save_name_and_age_to_csv(name_and_age_list, csv_path):
         name_and_age_list (list): (name, age) of people
         csv_path (str): Path of CSV file
     """
-    # TODO: Create function body
-    return
+    report_df = pd.DataFrame(name_and_age_list)
+   
+    report_header = ('name', 'age')
+   
+    report_df.to_csv(csv_path, header=report_header)
+    
 
 def get_script_dir():
     """Determines the path of the directory in which this script resides
