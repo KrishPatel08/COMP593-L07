@@ -14,16 +14,19 @@ import sqlite3
 import random
 
 
+
 def main():
+
     global db_path
     db_path = os.path.join(get_script_dir(), 'social_network.db')
     create_people_table()
     populate_people_table()
 
 def create_people_table():
+
     """Creates the people table in the database"""
     
-    con = sqlite3.connect('social_network.db')
+    con = sqlite3.connect(db_path)
 
     cur = con.cursor()
 
@@ -51,6 +54,7 @@ def create_people_table():
     
 
 def populate_people_table():
+
     """Populates the people table with 200 fake people"""
     
     con = sqlite3.connect(db_path)
@@ -76,24 +80,23 @@ def populate_people_table():
     """
 
     for _ in range(200):
+
         new_people = (fake.name(),
-                    fake.ascii_safe_email(),
-                    fake.address(),
+                    fake.ascii_company_email(),
+                    fake.street_address(),
                     fake.city(),
                     fake.country(),
-                    fake.profile(),
+                    fake.text(),
                     random.randint(1, 100),
                     datetime.now(),
                     datetime.now())
    
-    cur.execute(add_people_query, new_people)
+        cur.execute(add_people_query, new_people)
 
     con.commit()
     
     con.close()
     
-    
-
 def get_script_dir():
     """Determines the path of the directory in which this script resides
 
